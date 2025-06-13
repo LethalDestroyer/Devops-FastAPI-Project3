@@ -71,3 +71,22 @@ resource "aws_route_table_association" "public_assoc" {
   subnet_id = aws_subnet.public[count.index].id
   route_table_id = aws_route_table.public_rt.id
 }
+
+# Elastic IP code.
+resource "aws_eip" "nat_eip" {
+  vpc = true
+
+  tags = {
+    Name = "${var.project}-nat-eip"
+  }
+}
+
+resource "aws_nat_gateway" "nat" {
+  allocation_id = aws_eip.nat_eip.id
+  subnet_id = element(aws_subnet.public[*].id, 0)
+  depends_on = [ aws_internet_gateway.igw ]
+
+  tags = {
+    Name = "${var.project}-nat-gateway"
+  }
+}
