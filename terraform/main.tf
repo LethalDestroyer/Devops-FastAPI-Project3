@@ -16,3 +16,12 @@ module "ec2" {
   docker_image   = "devopsdestroyer/fastapi-devops-app:v1.0.2"
   project        = var.project
 }
+
+# Elastic IP code.
+resource "aws_eip" "nat_eip" {
+  vpc = true
+
+  tags = {
+    Name = "${var.project}-nat-eip"
+  }
+}
