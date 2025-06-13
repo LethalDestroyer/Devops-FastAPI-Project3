@@ -17,11 +17,12 @@ module "ec2" {
   project        = var.project
 }
 
-# Elastic IP code.
-resource "aws_eip" "nat_eip" {
-  vpc = true
-
-  tags = {
-    Name = "${var.project}-nat-eip"
-  }
+module "alb" {
+  source = "./alb"
+  project = var.project
+  vpc_id = module.vpc.vpc_id
+  public_subnet_ids = module.vpc.public_subnet_ids
+  instance_id = module.ec2.instance_id
+  target_port = 8000
 }
+
