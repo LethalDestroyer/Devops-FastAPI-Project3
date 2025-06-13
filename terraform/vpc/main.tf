@@ -18,7 +18,7 @@ resource "aws_internet_gateway" "igw" {
   }
 }
 
-# This will create aws_subnet 
+# This will create aws_subnet public
 
 resource "aws_subnet" "public" {
   count = length(var.public_subnet_cidrs)
@@ -29,6 +29,20 @@ resource "aws_subnet" "public" {
 
   tags = {
     Name = "${var.project}-public-${count.index + 1}"
+  }
+}
+
+# This will create the aws_subnet private
+
+resource "aws_subnet" "private" {
+  count = length(var.private_subnet_cidrs)
+  vpc_id = aws_vpc.main.id
+  cidr_block = var.private_subnet_cidrs[count.index]
+  availability_zone = var.availability_zone[count.index]
+  map_public_ip_on_launch = false
+
+  tags = {
+    Name = "${var.project}-private-${count.index + 1}"
   }
 }
 
