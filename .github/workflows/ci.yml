@@ -38,5 +38,5 @@ jobs:
           file: ./fastapi-app/Dockerfile
           push: true
           tags: |
-            ${{ env.DOCKER_IMAGE_NAME }}:${{ steps.get_sha.outputs.VERSION }}
-            ${{ env.DOCKER_IMAGE_NAME }}:latest
+            ${{ env.DOCKER_USERNAME }}/${{ env.DOCKER_IMAGE_NAME }}:${{ steps.get_sha.outputs.VERSION }}
+            ${{ env.DOCKER_USERNAME }}/${{ env.DOCKER_IMAGE_NAME }}:latest
