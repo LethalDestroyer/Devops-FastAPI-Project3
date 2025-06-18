@@ -23,7 +23,7 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
 
     - name: Build Docker image
-      run: docker build -t ${{ secrets.DOCKER_USERNAME }}/fastapi-devops-app:${{ github.sha }} .
+      run: docker buildx build -t ${{ secrets.DOCKER_USERNAME }}/fastapi-devops-app:${{ github.sha }} .
 
     - name: Push Docker image to DockerHub
       run: docker push ${{ secrets.DOCKER_USERNAME }}/fastapi-devops-app:${{ github.sha }}
