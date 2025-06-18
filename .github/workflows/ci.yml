@@ -3,7 +3,7 @@ name: Build and Push FastAPI App
 on:
   push:
     branches:
-      - main
+      - github-action-setup
 
 jobs:
   build:
