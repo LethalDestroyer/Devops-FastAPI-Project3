@@ -25,6 +25,7 @@ jobs:
       - name: Build and Push Docker image with SHA tag
         run: |
           docker buildx build \
+            --no-cache \
             --platform linux/amd64 \
             --tag ${{ secrets.DOCKER_USERNAME }}/fastapi-devops-app:${{ github.sha }} \
             --push .
