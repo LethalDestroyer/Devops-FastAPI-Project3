@@ -6,14 +6,14 @@ on:
       - main
       # Trigger only on tag push (e.g., v1.0.3)
 
-env:
-  DOCKER_REGISTRY: docker.io
-  DOCKER_IMAGE_NAME: ${{ secrets.DOCKER_USERNAME }}/fastapi-devops-app
-
 jobs:
   build:
     name: Docker Build and Push Job
     runs-on: ubuntu-latest
+
+    env:
+      DOCKER_REGISTRY: docker.io
+      DOCKER_IMAGE_NAME: ${{ secrets.DOCKER_USERNAME }}/fastapi-devops-app
 
     steps:
       - name: Checkout source code
