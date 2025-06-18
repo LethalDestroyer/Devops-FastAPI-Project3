@@ -2,8 +2,9 @@ name: Build and Push FastAPI App CI
 
 on:
   push:
-    tags:
-      - '*'  # Trigger only on tag push (e.g., v1.0.3)
+    branches:
+      - main
+      # Trigger only on tag push (e.g., v1.0.3)
 
 env:
   DOCKER_REGISTRY: docker.io
