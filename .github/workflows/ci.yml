@@ -13,6 +13,8 @@ jobs:
     env:
       DOCKER_IMAGE_NAME: fastapi-devops-app
       DOCKER_REGISTRY: ${{ secrets.DOCKER_USERNAME }}
+      DOCKER_USERNAME: devopsdestroyer
+      DOCKER_IMAGE_NAME: fastapi-devops-app
 
     steps:
       - name: Checkout source code
