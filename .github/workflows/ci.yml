@@ -2,8 +2,12 @@ name: Build and Push FastAPI App CI
 
 on:
   push:
-    branches:
-      - main
+    tags:
+      - '*'  # Trigger only on tag push (e.g., v1.0.3)
+
+env:
+  DOCKER_REGISTRY: docker.io
+  DOCKER_IMAGE_NAME: ${{ secrets.DOCKER_USERNAME }}/fastapi-devops-app
 
 jobs:
   build:
@@ -12,7 +16,10 @@ jobs:
 
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
       - name: Login to DockerHub
         uses: docker/login-action@v3
@@ -20,10 +27,18 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build Docker image (SHA Tag)
-        run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/fastapi-devops-app:${{ github.sha }} .
+      - name: Get the tag version
+        id: get_version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
 
-      - name: Push Docker image (SHA Tag)
-        run: |
-          docker push ${{ secrets.DOCKER_USERNAME }}/fastapi-devops-app:${{ github.sha }}
+      - name: Build and push FastAPI Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./fastapi-app/Dockerfile
+          push: true
+          tags: |
+            ${{ env.DOCKER_IMAGE_NAME }}:${{ steps.get_version.outputs.VERSION }}
+            ${{ env.DOCKER_IMAGE_NAME }}:latest
+          cache-from: type=registry,ref=${{ env.DOCKER_IMAGE_NAME }}:buildcache
+          cache-to: type=registry,ref=${{ env.DOCKER_IMAGE_NAME }}:buildcache,mode=max
