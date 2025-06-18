@@ -1,4 +1,4 @@
-name: Build and Push FastAPI App
+name: Build and Push FastAPI App CI
 
 on:
   push:
@@ -7,6 +7,7 @@ on:
 
 jobs:
   build:
+    name: Docker Build and Push Job
     runs-on: ubuntu-latest
 
     steps:
