@@ -39,7 +39,8 @@ jobs:
           file: ./fastapi-app/Dockerfile
           push: true
           tags: |
-            ${{ env.DOCKER_IMAGE_NAME }}:${{ steps.get_version.outputs.VERSION }}
-            ${{ env.DOCKER_IMAGE_NAME }}:latest
-          cache-from: type=registry,ref=${{ env.DOCKER_IMAGE_NAME }}:buildcache
-          cache-to: type=registry,ref=${{ env.DOCKER_IMAGE_NAME }}:buildcache,mode=max
+            ${{ secrets.DOCKER_USERNAME }}/fastapi-devops-app:${{ github.sha }}
+            ${{ secrets.DOCKER_USERNAME }}/fastapi-devops-app:latest
+          cache-from: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/fastapi-devops-app:buildcache
+          cache-to: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/fastapi-devops-app:buildcache,mode=max
+
