@@ -22,7 +22,7 @@ jobs:
       - name: Build Docker image (SHA Tag)
         run: |
           docker build --no-cache -t ${{ secrets.DOCKER_USERNAME }}/fastapi-devops-app:${{ github.sha }} .
-
+      # This will push the image
       - name: Push Docker image (SHA Tag)
         run: |
           docker push ${{ secrets.DOCKER_USERNAME }}/fastapi-devops-app:${{ github.sha }}
